@@ -2,7 +2,7 @@
 
 
 ####################
-# F.Roux, June 2019
+# F.Roux, July 2019
 ##
 # use as: sh gz2gvf.sh 
 

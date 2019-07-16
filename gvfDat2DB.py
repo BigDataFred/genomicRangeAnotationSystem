@@ -3,7 +3,7 @@
 import os
 from SNV2db import loadGVFdb
 #################################################
-# F.Roux, June 2019
+# F.Roux, July 2019
 ##
 
 p2gvf = "/Volumes/Toshiba3Tb/"

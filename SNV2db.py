@@ -6,7 +6,7 @@ import re
 import time
 from dbTools import db
 #################################################
-# F.Roux, June 2019
+# F.Roux, July 2019
 ##
 
 def loadGVFdb(p2gvf,gvfName,chromNr=1):
