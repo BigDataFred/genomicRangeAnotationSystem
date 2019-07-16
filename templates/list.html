@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+   <body>
+      <table border = 1>
+         <thead>
+            <td>Variant ID</td>
+            <td>Copy Number Status</td>
+            <td>Phenotype</td>
+         </thead>
+         
+         {% for row in rows %}
+            <tr>
+               <td>{{row["variant_id"]}}</td>
+               <td>{{row["copy_number_status"]}}</td>
+               <td> {{ row["phenotype"]}}</td>
+            </tr>
+         {% endfor %}
+      </table>
+      
+      <a href = "/">Search again</a>
+   </body>
+</html>
