@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #################################################
+import sys
 import time
 import sqlite3
 from flask import g
@@ -7,9 +8,13 @@ from flask import Flask, render_template, request
 #################################################
 # F.Roux, July 2019
 ##
+
+# use as python App.py "/path/to/db/"
+
 app = Flask(__name__)
 
-DATABASE = '/Users/froux/Desktop/genAnotationSys/snvDB.db'
+p2db = sys.argv[1]
+DATABASE = p2db+'snvDB.db'
 
 def getDB():
     db = getattr(g, '_database', None)
@@ -56,16 +61,14 @@ def list():
        cntTbl+=1
    print(tbl)
    
-   #sqlCmnd2 = ""
-   #cnt = 0
-   #for tmp in tbl:
-    #  if (cnt <cntTbl-1):    
-    #     sqlCmnd2 = sqlCmnd2+" SELECT variant_id,copy_number_status,phenotype,outer_start,outer_end FROM "+tmp+" WHERE "+sMode+"== "+sIdx+" AND "+eMode+"== "+eIdx+" UNION";
-    #  else:
-    #     sqlCmnd2 = sqlCmnd2+" SELECT variant_id,copy_number_status,phenotype,outer_start,outer_end FROM "+tmp+" WHERE "+sMode+"== "+sIdx+" AND "+eMode+"== "+eIdx+";";                        
-    #  cnt+=1
-   
-   sqlCmnd2 = " SELECT variant_id,copy_number_status,phenotype,outer_start,outer_end FROM NCBI36_variant_call_somatic_gvf WHERE "+sMode+"== "+sIdx+" AND "+eMode+"== "+eIdx+";"; 
+   sqlCmnd2 = ""
+   cnt = 0
+   for tmp in tbl:
+      if (cnt <cntTbl-1):    
+         sqlCmnd2 = sqlCmnd2+" SELECT variant_id,copy_number_status,phenotype,outer_start,outer_end FROM "+tmp+" WHERE "+sMode+">= "+sIdx+" AND "+eMode+"<= "+eIdx+" UNION";
+      else:
+         sqlCmnd2 = sqlCmnd2+" SELECT variant_id,copy_number_status,phenotype,outer_start,outer_end FROM "+tmp+" WHERE "+sMode+">= "+sIdx+" AND "+eMode+"<= "+eIdx+";";                        
+      cnt+=1
    
    #print(sqlCmnd2)   
    cur = db.cursor()

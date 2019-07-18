@@ -9,7 +9,7 @@ from dbTools import db
 # F.Roux, July 2019
 ##
 
-def loadGVFdb(p2gvf,gvfName,chromNr=1):
+def loadGVFdb(p2gvf,gvfName,savePath,chromNr=1):
     
     #This function loads chromosome specific gvf data into an sqlite database
     #p2f: path to file
@@ -17,7 +17,7 @@ def loadGVFdb(p2gvf,gvfName,chromNr=1):
     #chromNr: chromosome number (e.g. 1) for which data should be extracted
     
     snvDB = db()# initialize db
-    con = snvDB.connectDB("/Users/froux/Desktop/genAnotationSys/snvDB.db")# connect to sqlite db
+    con = snvDB.connectDB(savePath+"snvDB.db")# connect to sqlite db
     tableName = snvDB.dot2bar(gvfName)#change dots to underscores
     print("creating table " +tableName)
     snvDB.createTable(con,tableName)#create new table in db #"allSVNdat"
