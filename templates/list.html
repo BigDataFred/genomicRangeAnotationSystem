@@ -1,12 +1,11 @@
 <!doctype html>
 <html>
 <head>
-	<style>
-		table#t01 {background-color: #f1f1c1;}
-		table#t02 {background-color: #00ff00;}
-	</style>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/link.css') }}">
 </head>
    <body>
+	<button class="collapsible">Exact matches</button>
+<div class="content">
       <table border=1 id="t01">
          <thead>
             <td><b>Variant ID</b></td>
@@ -26,7 +25,27 @@
             </tr>
          {% endfor %}
       </table>
-	  
+	  </div> 
+
       <a href = "/">Search again</a>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
    </body>
 </html>
