@@ -4,8 +4,14 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/link.css') }}">
 </head>
    <body>
-	<button class="collapsible">Exact matches</button>
+	
+	{% set testStr1 = 'not_reported' %}
+	{% set testStr2 = 'None' %}
+	{% set testStr3 = 'not provided' %}
+
+	<button class="collapsible">Clinically relevant</button>
 <div class="content">
+
       <table border=1 id="t01">
          <thead>
             <td><b>Variant ID</b></td>
@@ -15,14 +21,47 @@
 			<td><b>Outer-End</b></td>
          </thead>
          
+	
+	
          {% for row in rows %}
-            <tr>
-               <td>{{row["variant_id"]}}</td>
-               <td>{{row["copy_number_status"]}}</td>
-               <td> {{ row["phenotype"]}}</td>
-			   <td> {{ row["outer_start"]}}</td>
-			   <td> {{ row["outer_end"]}}</td>
-            </tr>
+		{% if row["phenotype"]|string() != testStr1 and row["phenotype"]|string() != testStr2 and row["phenotype"]|string() != testStr3 %}
+            	<tr>
+               		<td>{{row["variant_id"]}}</td>
+               		<td>{{row["copy_number_status"]}}</td>
+               		<td> {{ row["phenotype"]}}</td>
+	       		<td> {{ row["outer_start"]}}</td>
+	       		<td> {{ row["outer_end"]}}</td>
+            	</tr>
+		{% endif %}
+         {% endfor %}
+      </table>
+	  </div> 
+	<br>
+	<br>
+	<button class="collapsible">Others</button>
+<div class="content">
+
+      <table border=1 id="t01">
+         <thead>
+            <td><b>Variant ID</b></td>
+            <td><b>Copy Number Status</b></td>
+            <td><b>Phenotype</b></td>
+			<td><b>Outer-Start</b></td>
+			<td><b>Outer-End</b></td>
+         </thead>
+         
+	
+	
+         {% for row in rows %}
+		{% if row["phenotype"]|string() == testStr1 or row["phenotype"]|string() == testStr2 or row["phenotype"]|string() == testStr3 %}
+            	<tr>
+               		<td>{{row["variant_id"]}}</td>
+               		<td>{{row["copy_number_status"]}}</td>
+               		<td> {{ row["phenotype"]}}</td>
+	       		<td> {{ row["outer_start"]}}</td>
+	       		<td> {{ row["outer_end"]}}</td>
+            	</tr>
+		{% endif %}
          {% endfor %}
       </table>
 	  </div> 
