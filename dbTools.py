@@ -18,8 +18,7 @@ class db():
         
         
     def createTable(self,db,tableName):        
-        sqlcmd =  """ CREATE TABLE IF NOT EXISTS """+tableName+"""( row_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                variant_id TEXT,
+        sqlcmd =  """ CREATE TABLE IF NOT EXISTS """+tableName+"""(variant_id TEXT PRIMARY KEY,
                                                 alias TEXT,
                                                 variant_sample TEXT,
                                                 chromosome_accession TEXT,
@@ -32,8 +31,9 @@ class db():
                                                 copy_number_status TEXT,
                                                 phenotype TEXT,
                                                 metadata TEXT,
-                                                UNIQUE (metadata)
+                                                UNIQUE(variant_id,alias,variant_sample,chromosome_accession,outer_start,outer_end,copy_number_status,phenotype,metadata)
                                                 ); """
+
         c = db.cursor()
         c.execute(sqlcmd)
         

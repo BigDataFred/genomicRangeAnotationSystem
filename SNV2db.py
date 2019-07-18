@@ -20,7 +20,7 @@ def loadGVFdb(p2gvf,gvfName,chromNr=1):
     con = snvDB.connectDB("/Users/froux/Desktop/genAnotationSys/snvDB.db")# connect to sqlite db
     tableName = snvDB.dot2bar(gvfName)#change dots to underscores
     print("creating table " +tableName)
-    snvDB.createTable(con,tableName)#create new table in db
+    snvDB.createTable(con,tableName)#create new table in db #"allSVNdat"
 
     print("reading "+p2gvf+gvfName)
     print("#########################")
@@ -68,11 +68,9 @@ def loadGVFdb(p2gvf,gvfName,chromNr=1):
                  try:
                      tmp = snvDB.ceateRow(con,tableName,vals)
                  except:
-                     print(vals)
+                     #return None
+                     print( vals )
             
-                #if (cnt>100):
-                #    break
-
     con.commit()#commit changes to db
     f.close()#close file    
     print(cnt)#count number of snvs that were processed in total

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #################################################
+import time
 import sqlite3
 from flask import g
 from flask import Flask, render_template, request
@@ -28,19 +29,51 @@ def main():
 
 @app.route('/list',methods = ['POST', 'GET'])
 def list():
+
    if (request.method == 'POST'):
-      oS = request.form['OuterStart']
-      oE = request.form['OuterEnd']
-   print(oS)
-   print(oE)         
+      sIdx = request.form['StartIdx']
+      eIdx = request.form['EndIdx']
+      sMode = request.form['start']
+      eMode = request.form['end']
+      
+   print("start-index:"+sIdx)
+   print("start-index:"+eIdx)
+   print("start-mode:"+sMode)
+   print("end-mode:"+eMode)
+      
+   t = time.time()#start timer     
    db = getDB()
    db.row_factory = sqlite3.Row
    
    cur = db.cursor()
+   sqlCmnd1 = "SELECT name FROM sqlite_master WHERE type IN ('table') AND name NOT LIKE 'sqlite_%';"   
+   tables = cur.execute( sqlCmnd1 ) 
    
-   rows = db.execute(" SELECT variant_id,copy_number_status,phenotype FROM GRCh37_variant_call_gvf WHERE outer_start> "+oS+" AND outer_start < "+oE+"; ");
-   print(rows)
-   return render_template("list.html",rows = rows)
+   cntTbl = 0
+   tbl = []
+   for tmp in tables:
+       tbl.append(tmp[0])
+       cntTbl+=1
+   print(tbl)
+   
+   #sqlCmnd2 = ""
+   #cnt = 0
+   #for tmp in tbl:
+    #  if (cnt <cntTbl-1):    
+    #     sqlCmnd2 = sqlCmnd2+" SELECT variant_id,copy_number_status,phenotype,outer_start,outer_end FROM "+tmp+" WHERE "+sMode+"== "+sIdx+" AND "+eMode+"== "+eIdx+" UNION";
+    #  else:
+    #     sqlCmnd2 = sqlCmnd2+" SELECT variant_id,copy_number_status,phenotype,outer_start,outer_end FROM "+tmp+" WHERE "+sMode+"== "+sIdx+" AND "+eMode+"== "+eIdx+";";                        
+    #  cnt+=1
+   
+   sqlCmnd2 = " SELECT variant_id,copy_number_status,phenotype,outer_start,outer_end FROM NCBI36_variant_call_somatic_gvf WHERE "+sMode+"== "+sIdx+" AND "+eMode+"== "+eIdx+";"; 
+   
+   #print(sqlCmnd2)   
+   cur = db.cursor()
+   cur.execute( sqlCmnd2 )
+   rows = cur.fetchall( )
+   print(time.time()-t)
+   
+   return render_template("list.html",rows = rows, rows2 = rows)
    
 if __name__ == '__main__':
    app.run(debug = True)

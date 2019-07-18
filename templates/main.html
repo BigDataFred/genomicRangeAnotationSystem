@@ -1,13 +1,44 @@
 <html>
+   <head>
+	   <style>
+		   table,th,td {text-align: left;}
+	   </style>
+   </head>
    <body>
       <form action = "{{ url_for('list') }}" method = "POST">
 		  
          <h3>Genomic Range</h3>
-         OuterStart<br>
-         <input type = "text" name = "OuterStart" /></br>
-                  
-         OuterEnd<br>
-         <input type = "text" name = "OuterEnd" /><br>
+         
+		 <table>
+		 <tr>
+			 <td>
+			 Outer-Start<input type="checkbox" name="start" value="outer_start"> 
+			 Inner-Start<input type="checkbox" name="start" value="inner_start">
+			</td>	
+	 	</tr>      
+   		 <tr>
+   			 <td>
+   			 Inner-End<input type="checkbox" name="end" value="inner_end"> 
+   			 Outer-End<input type="checkbox" name="end" value="outer_end"> 
+   			</td>	
+   	 	</tr>      
+		   
+		 <tr>
+			 <td> Start
+			 <input type = "text" name = "StartIdx" />
+			 	End
+	         <input type = "text" name = "EndIdx" />
+			</td>				 
+	 	</tr>
+		<tr>
+			<td> Tol1
+			 <input type = "text" name = "tol1" />
+			 	Tol2
+	         <input type = "text" name = "tol2" />
+			</td>
+		</tr>	
+		</table>
+		<br>		 
          <input type = "submit" value = "submit" /><br>
 	  </form>
    </body>

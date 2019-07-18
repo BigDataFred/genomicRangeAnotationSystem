@@ -1,11 +1,19 @@
 <!doctype html>
 <html>
+<head>
+	<style>
+		table#t01 {background-color: #f1f1c1;}
+		table#t02 {background-color: #00ff00;}
+	</style>
+</head>
    <body>
-      <table border = 1>
+      <table border=1 id="t01">
          <thead>
-            <td>Variant ID</td>
-            <td>Copy Number Status</td>
-            <td>Phenotype</td>
+            <td><b>Variant ID</b></td>
+            <td><b>Copy Number Status</b></td>
+            <td><b>Phenotype</b></td>
+			<td><b>Outer-Start</b></td>
+			<td><b>Outer-End</b></td>
          </thead>
          
          {% for row in rows %}
@@ -13,10 +21,12 @@
                <td>{{row["variant_id"]}}</td>
                <td>{{row["copy_number_status"]}}</td>
                <td> {{ row["phenotype"]}}</td>
+			   <td> {{ row["outer_start"]}}</td>
+			   <td> {{ row["outer_end"]}}</td>
             </tr>
          {% endfor %}
       </table>
-      
+	  
       <a href = "/">Search again</a>
    </body>
 </html>
