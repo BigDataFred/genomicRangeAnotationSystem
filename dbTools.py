@@ -18,10 +18,7 @@ class db():
         
         
     def createTable(self,db,tableName):        
-        sqlcmd =  """ CREATE TABLE IF NOT EXISTS """+tableName+"""(variant_id TEXT PRIMARY KEY,
-                                                alias TEXT,
-                                                variant_sample TEXT,
-                                                chromosome_accession TEXT,
+        sqlcmd =  """ CREATE TABLE IF NOT EXISTS """+tableName+"""(unique_variant_id TEXT PRIMARY KEY,                                    
                                                 outer_start INTEGER DEFAULT 0,
                                                 start INTEGER DEFAULT 0,
                                                 inner_start INTEGER DEFAULT 0,
@@ -29,9 +26,10 @@ class db():
                                                 end INTEGER DEFAULT 0,
                                                 outer_end INTEGER DEFAULT 0, 
                                                 copy_number_status TEXT,
+                                                orig_variant_id TEXT,
+                                                data_origin TEXT,
                                                 phenotype TEXT,
-                                                metadata TEXT,
-                                                UNIQUE(variant_id,alias,variant_sample,chromosome_accession,outer_start,outer_end,copy_number_status,phenotype,metadata)
+                                                UNIQUE(unique_variant_id)
                                                 ); """
 
         c = db.cursor()
@@ -39,10 +37,7 @@ class db():
         
 
     def ceateRow(self,db,tableName,vals):        
-        sqlcmd = """ INSERT INTO """+tableName+"""(variant_id,
-                            Alias,
-                            variant_sample,
-                            chromosome_accession,
+        sqlcmd = """ INSERT INTO """+tableName+"""(unique_variant_id,                            
                             outer_start,
                             start,
                             inner_start,
@@ -50,14 +45,21 @@ class db():
                             end,
                             outer_end,
                             copy_number_status,
-                            phenotype,
-                            metadata) 
-            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) """
+                            orig_variant_id,
+                            data_origin,
+                            phenotype) 
+            VALUES(?,?,?,?,?,?,?,?,?,?,?) """
                 
         c = db.cursor()
         c.execute( sqlcmd, vals )
-        return c.lastrowid                 
+        return c.lastrowid           
         
+        
+    def createIndex4Table(self,db,tableName,optimCrit):
+        sqlcmd = """ CREATE INDEX IF NOT EXISTS optimSearch4"""+tableName+""" ON """+tableName+""" """+optimCrit+"""; """
+        c = db.cursor()
+        c.execute( sqlcmd )
+                      
         
     def extractStringIdx(self,patStr1, patStr2, stringDat):
         ix1 = re.search(patStr1,stringDat)
@@ -75,10 +77,16 @@ class db():
         return metDat
         
         
-    def getVarID(self,stringDat):
+    def getUniqueVarID(self,stringDat):
+       ix1,ix2 = self.extractStringIdx("ID=", ";", stringDat)
+       uVarID  = stringDat[ix1:ix2]#variantID
+       return uVarID
+        
+        
+    def getOrigVarID(self,stringDat):
         ix1,ix2 = self.extractStringIdx("Name=", ";", stringDat)
-        varID  = stringDat[ix1:ix2]#variantID
-        return varID
+        origVarID  = stringDat[ix1:ix2]#variantID
+        return origVarID
         
         
     def getAlias(self,stringDat):
@@ -136,6 +144,15 @@ class db():
             pheno = None
         return pheno
         
+        
+    def getDatOrigin(self,stringDat):
+        try:
+           ix1,ix2 = self.extractStringIdx("Dbxref=", ";", stringDat)
+           datOrigin  = stringDat[ix1:ix2]
+        except:
+            datOrigin = None
+        return datOrigin
+            
         
     def dot2bar(self,x):
         m = re.finditer("\.",x)

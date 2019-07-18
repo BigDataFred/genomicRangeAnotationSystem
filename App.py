@@ -14,6 +14,7 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 p2db = sys.argv[1]
+print(p2db)
 DATABASE = p2db+'snvDB.db'
 
 def getDB():
@@ -51,26 +52,27 @@ def list():
    db.row_factory = sqlite3.Row
    
    cur = db.cursor()
-   sqlCmnd1 = "SELECT name FROM sqlite_master WHERE type IN ('table') AND name NOT LIKE 'sqlite_%';"   
-   tables = cur.execute( sqlCmnd1 ) 
+   #sqlCmnd1 = "SELECT name FROM sqlite_master WHERE type IN ('table') AND name NOT LIKE 'sqlite_%';"   
+   #tables = cur.execute( sqlCmnd1 ) 
    
-   cntTbl = 0
-   tbl = []
-   for tmp in tables:
-       tbl.append(tmp[0])
-       cntTbl+=1
-   print(tbl)
+   #cntTbl = 0
+   #tbl = []
+   #for tmp in tables:
+    #   tbl.append(tmp[0])
+    #   cntTbl+=1
+   #print(tbl)
    
-   sqlCmnd2 = ""
-   cnt = 0
-   for tmp in tbl:
-      if (cnt <cntTbl-1):    
-         sqlCmnd2 = sqlCmnd2+" SELECT variant_id,copy_number_status,phenotype,outer_start,outer_end FROM "+tmp+" WHERE "+sMode+">= "+sIdx+" AND "+eMode+"<= "+eIdx+" UNION";
-      else:
-         sqlCmnd2 = sqlCmnd2+" SELECT variant_id,copy_number_status,phenotype,outer_start,outer_end FROM "+tmp+" WHERE "+sMode+">= "+sIdx+" AND "+eMode+"<= "+eIdx+";";                        
-      cnt+=1
-   
-   #print(sqlCmnd2)   
+   #sqlCmnd2 = ""
+   #cnt = 0
+   #for tmp in tbl:
+      #if (cnt <cntTbl-1):    
+         #sqlCmnd2 = sqlCmnd2+" SELECT orig_variant_id,outer_start,outer_end,copy_number_status,phenotype,data_origin FROM "+tmp+" WHERE "+sMode+">= "+sIdx+" AND "+eMode+"<= "+eIdx+" UNION";
+      #else:
+         #sqlCmnd2 = sqlCmnd2+" SELECT orig_variant_id,outer_start,outer_end,copy_number_status,phenotype,data_origin FROM "+tmp+" WHERE "+sMode+">= "+sIdx+" AND "+eMode+"<= "+eIdx+";";                        
+      #cnt+=1
+      
+   sqlCmnd2 = """ SELECT orig_variant_id,outer_start,outer_end,copy_number_status,phenotype,data_origin FROM allSVNdat WHERE """+sMode+""">= """+sIdx+""" AND """+eMode+"""<= """+eIdx+""";""";
+   print(sqlCmnd2)
    cur = db.cursor()
    cur.execute( sqlCmnd2 )
    rows = cur.fetchall( )
