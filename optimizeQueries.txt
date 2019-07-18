@@ -1,0 +1,19 @@
+SELECT variant_id FROM GRCh37_variant_call_gvf WHERE outer_start >= 15000 AND outer_end <=350000;
+
+
+EXPLAIN QUERY PLAN SELECT * FROM GRCh37_variant_call_gvf WHERE outer_start >= 15000 AND outer_start <=350000;
+
+
+CREATE INDEX tag_titles ON GRCh37_variant_call_gvf (outer_start,outer_start);
+
+EXPLAIN QUERY PLAN SELECT * FROM GRCh37_variant_call_gvf WHERE outer_start >= 15000 AND outer_start <=350000;
+
+
+START=$(date +%s.%N)
+echo "SELECT variant_id FROM GRCh37_variant_call_gvf WHERE outer_start >= 15000 AND outer_end <=350000;
+" | sqlite3 snvDB.db
+END=$(date +%s.%N)
+DIFF=$(echo "$END - $START" | bc)
+echo $DIFF
+
+echo "CREATE INDEX start_end_range ON GRCh37_variant_call_gvf (outer_start,outer_start);SELECT variant_id FROM GRCh37_variant_call_gvf WHERE outer_start >= 15000 AND outer_end <=350000;" | sqlite3 snvDB.db
