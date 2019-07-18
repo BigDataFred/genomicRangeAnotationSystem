@@ -4,7 +4,7 @@
 ####################
 # F.Roux, July 2019
 ##
-# use as: sh ftpDownloadSNVdat.sh "/Volumes/Toshiba3Tb/"
+# use as: sh ftpDownloadSNVdat.sh "/path/to/save/data/"
 
 savepath=$1
 echo ${savepath}
