@@ -4,8 +4,8 @@
 # End date: 19.07.2019
 
 # Summary:
-# Implementation of a db-server and client-app to query SNV-db for genomic ranges using
-# bash-scripts, python and sqlite3. If you don't have flask installed use the python virtual environment to run app in local folder (). Tested and validate on data for Chromosome 1 only.
+# Implementation of a db-server and db-client-app to query SNV-db for genomic ranges using
+# bash, python 3.6.8 and sqlite3. If you don't have flask installed use the python virtual environment to run app in local folder (source env/bin/activate). Tested and validated on Ubuntu bionic (18.04) and Mac OS Mojave (10.14) on data for Chromosome 1 only.
 
 # Description:
 
