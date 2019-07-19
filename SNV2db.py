@@ -61,7 +61,7 @@ def loadGVFdb(p2gvf,gvfName,savePath,chromNr=1):
 
                  #data origin
                  datOrigin = snvDB.getDatOrigin( tmpDat )
-                 
+
                  #phenotype
                  pheno  = snvDB.getPhenotype( tmpDat )
                  

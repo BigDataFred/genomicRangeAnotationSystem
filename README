@@ -1,0 +1,44 @@
+# Anotation system for SNV data 
+# F. Roux, July 2019
+# Start date: 13.07.2019
+# End date: 19.07.2019
+
+# Summary:
+# Implementation of a db-server and client-app to query SNV-db for genomic ranges using
+# bash-scripts, python and sqlite3. If you don't have flask installed use the python virtual environment to run app in local folder (). Tested and validate on data for Chromosome 1 only.
+
+# Description:
+
+# Bash tools:
+###############
+# Step 1 - Download the complete Homo sapiens assembly data in gvf-format from the dbVar ftp server:
+# ftpDownloadSNVdat.sh
+
+# Step 2 -Verify the checkusm of all unzipped files:
+# makeANDcheckMD5.sh
+
+# Python tools:
+###############
+# Step 3 -Load the gvf-data corresponding to the entire assembly data into an SQLITE database
+# gvfDat2DB.py
+# This script calls both the dbTolls.py class and the SNV2db.py method
+# NOTE that to accelerate search queries each row has a unique key using:
+# """ INSERT INTO """+tableName+"""(unique_variant_id,outer_start,start,inner_start,inner_end,end,outer_end,copy_number_status,orig_variant_id,data_origin,phenotype) VALUES(?,?,?,?,?,?,?,?,?,?,?) """
+# where unique_variant_id is equal to uVarID = uVarID+origVarID+tmpDat[3]+tmpDat[4]+tmpDat[2]
+#
+# IMPORTANT: the db has been optimized for search genome Range search queries using:
+# """ CREATE INDEX IF NOT EXISTS optimSearch4"""+tableName+""" ON """+tableName+""" """+optimCrit+"""; """
+# where optimCrit is equal to (outer_start,outer_end)
+#
+
+# Step 4 -Launch the db-client App to perform genome range queries.
+# App.py
+
+# Step 5 -Navigate to localhost:5000 using web-browser (tested on Firefox)
+# Perform genome range search by entering start and end values
+# IMPORTANT:
+# Exact matches are defined by: 
+#""" SELECT orig_variant_id,outer_start,outer_end,copy_number_status,phenotype,data_origin FROM allSVNdat WHERE (outer_start == """+sIdx+""" AND outer_end == """+eIdx+""") AND (copy_number_status LIKE "%deletion%" OR copy_number_status LIKE "%duplication%" OR copy_number_status LIKE "%insertion%");"""
+#
+# Close hits are defined by:
+#""" SELECT orig_variant_id,outer_start,outer_end,copy_number_status,phenotype,data_origin FROM allSVNdat WHERE ( ( (outer_start < """+sIdx+""" AND outer_end > """+eIdx+""") AND (inner_start >= """+sIdx+""" AND inner_end <= """+eIdx+""") ) OR ( ( (outer_start == """+sIdx+""" AND outer_end > """+eIdx+""") AND (inner_end <= """+eIdx+""") ) ) OR ( ( (outer_start < """+sIdx+""" AND outer_end == """+eIdx+""") AND (inner_start >= """+sIdx+""") ) ) ) AND (copy_number_status LIKE "%deletion%" OR copy_number_status LIKE "%duplication%" OR copy_number_status LIKE "%insertion%");"""

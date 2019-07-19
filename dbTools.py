@@ -166,7 +166,7 @@ class db():
         
     def getDatOrigin(self,stringDat):
         try:
-           ix1,ix2 = self.extractStringIdx("Dbxref=", ";", stringDat)
+           ix1,ix2 = self.extractStringIdx("Dbxref=URL:", ";", stringDat)
            datOrigin  = stringDat[ix1:ix2]
         except:
             datOrigin = None
