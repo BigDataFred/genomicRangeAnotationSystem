@@ -128,8 +128,8 @@ class db():
                 e = None
                 iE = int(eR.groups()[1])#inner end
             else:
-                e = int(eR.groups()[1])#end
-                iE = int(eR.groups()[2])#inner end
+                e = int(eR.groups()[2])#end
+                iE = int(eR.groups()[1])#inner end
         except:
             e = None
             iE = None
