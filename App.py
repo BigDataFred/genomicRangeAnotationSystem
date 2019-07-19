@@ -71,7 +71,7 @@ def list():
          #sqlCmnd2 = sqlCmnd2+" SELECT orig_variant_id,outer_start,outer_end,copy_number_status,phenotype,data_origin FROM "+tmp+" WHERE "+sMode+">= "+sIdx+" AND "+eMode+"<= "+eIdx+";";                        
       #cnt+=1
       
-   sqlCmnd2 = """ SELECT orig_variant_id,outer_start,outer_end,copy_number_status,phenotype,data_origin FROM allSVNdat WHERE """+sMode+""">= """+sIdx+""" AND """+eMode+"""<= """+eIdx+""";""";
+   sqlCmnd2 = """ SELECT orig_variant_id,outer_start,outer_end,copy_number_status,phenotype,data_origin FROM allSVNdat WHERE ("""+sMode+"""== """+sIdx+""" AND """+eMode+"""== """+eIdx+""") AND (copy_number_status == "deletion" OR copy_number_status == "duplication" OR copy_number_status == "insertion");""";
    print(sqlCmnd2)
    cur = db.cursor()
    cur.execute( sqlCmnd2 )
