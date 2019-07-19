@@ -12,9 +12,9 @@ from flask import Flask, render_template, request
 # data-base client that runs in a web-browser to implement anotation system
 # use as python App.py "/path/to/db/dbFile.db"
 
-app = Flask(__name__)
+DATABASE = sys.argv[1] # database name
 
-DATABASE = sys.argv[1]
+app = Flask(__name__) # initialize flask server
 
 # connect client to db
 def getDB():
@@ -49,25 +49,30 @@ def list():
    
    cur = db.cursor()
    
+   #################################### 
    # query to extract exact matches   
+   #################################### 
    sqlCmnd1 = """ SELECT orig_variant_id,outer_start,outer_end,copy_number_status,phenotype,data_origin FROM allSVNdat WHERE (outer_start == """+sIdx+""" AND outer_end == """+eIdx+""") AND (copy_number_status LIKE "%deletion%" OR copy_number_status LIKE "%duplication%" OR copy_number_status LIKE "%insertion%");""";
 
+   ####################################
    # query to extract exact close hits
+   #################################### 
    sqlCmnd2 = """ SELECT orig_variant_id,outer_start,outer_end,copy_number_status,phenotype,data_origin FROM allSVNdat WHERE ( ( (outer_start < """+sIdx+""" AND outer_end > """+eIdx+""") AND (inner_start >= """+sIdx+""" AND inner_end <= """+eIdx+""") ) OR ( ( (outer_start == """+sIdx+""" AND outer_end > """+eIdx+""") AND (inner_end <= """+eIdx+""") ) ) OR ( ( (outer_start < """+sIdx+""" AND outer_end == """+eIdx+""") AND (inner_start >= """+sIdx+""") ) ) ) AND (copy_number_status LIKE "%deletion%" OR copy_number_status LIKE "%duplication%" OR copy_number_status LIKE "%insertion%");""";
 
    # extract rows with exact matches
    cur = db.cursor()
    cur.execute( sqlCmnd1 )
-   rows1 = cur.fetchall( )
+   rows1 = cur.fetchall( ) # rows with exact matches
 
    # extract rows with close hits
    cur = db.cursor()
    cur.execute( sqlCmnd2 )
-   rows2 = cur.fetchall( )
+   rows2 = cur.fetchall( ) # rows with close hits
 
    print(time.time()-t)# query duration
    
-   return render_template("list.html",rows = rows1, rows2 = rows2)
+   # route row data to list.html 
+   return render_template("list.html",rows1 = rows1, rows2 = rows2)
    
 if __name__ == '__main__':
    app.run(debug = True)

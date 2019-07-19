@@ -112,8 +112,12 @@ class db():
                 s = int(sR.groups()[1])#inner start
                 iS = None
             else:
-                s = int( seR.groups()[1] )#start
-                iS = int( sR.groups()[2] )#inner start
+                if ( int( seR.groups()[1] ) < int( sR.groups()[2] ) ):
+                   s = int( seR.groups()[1] )#start
+                   iS = int( sR.groups()[2] )#inner start
+                else:
+                   s = int( seR.groups()[2] )#start
+                   iS = int( sR.groups()[1] )#inner start
         except:
             s = None
             iS = None
@@ -128,8 +132,12 @@ class db():
                 e = int(eR.groups()[1])#inner end
                 iE = None
             else:
-                e = int(eR.groups()[2])#end
-                iE = int(eR.groups()[1])#inner end
+                if ( int(eR.groups()[2]) > int(eR.groups()[1]) ):
+                   e = int(eR.groups()[2])#end
+                   iE = int(eR.groups()[1])#inner end
+                else:
+                   e = int(eR.groups()[1])#end
+                   iE = int(eR.groups()[2])#inner end
         except:
             e = None
             iE = None

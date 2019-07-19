@@ -5,7 +5,7 @@
 </head>
    <body>
 	
-	<button class="collapsible">Exact matches</button>
+	<button class="collapsible">Exact matches ( {{rows1|length}} )</button>
 <div class="content">
 
       <table border=1 id="t01">
@@ -18,7 +18,7 @@
 			<td><b>Data origin</b></td>
          </thead>
          
-         {% for row in rows %}
+         {% for row in rows1 %}
             	<tr>
 		       		<td> {{ row["outer_start"]}}</td>
 		       		<td> {{ row["outer_end"]}}</td>
@@ -33,7 +33,7 @@
 	<br>
 	<br>
 	
-	<button class="collapsible">Close hits</button>
+	<button class="collapsible">Close hits ( {{rows2|length}} )</button>
 <div class="content">
 
       <table border=1 id="t01">
