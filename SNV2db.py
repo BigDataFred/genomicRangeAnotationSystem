@@ -55,7 +55,7 @@ def loadGVFdb(p2gvf,gvfName,savePath,chromNr=1):
                  
                  #start range
                  s,iS = snvDB.getStartRange( tmpDat )
-                 
+
                  #stop range
                  e,iE = snvDB.getStopRange( tmpDat )
                  
@@ -77,7 +77,7 @@ def loadGVFdb(p2gvf,gvfName,savePath,chromNr=1):
                     rowCnt+=1#keep track of number of rows processed
                     tmp = snvDB.ceateRow(con,tableName,vals)
                  except:
-                     print( "WARNING:"+uVarID+" is not unique" )
+                     print( "WARNING: skipping "+uVarID+" -already exists in db" )
                      
     con.commit()#commit changes to db
     f.close()#close file    

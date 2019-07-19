@@ -63,8 +63,11 @@ class db():
         
     def extractStringIdx(self,patStr1, patStr2, stringDat):
         ix1 = re.search(patStr1,stringDat)
-        ix2 = re.search(patStr2,stringDat[ix1.end():len(stringDat)])
-        return ix1.end(),ix1.end()+ix2.start()
+        if (ix1!=None):
+            ix2 = re.search(patStr2,stringDat[ix1.end():len(stringDat)])        
+            return ix1.end(),ix1.end()+ix2.start()
+        else:
+            return 0, 0
         
         
     def getChromosome(self,stringDat):
@@ -105,40 +108,48 @@ class db():
         
         
     def getStartRange(self,stringDat):
-        try:
-            ix1,ix2 = self.extractStringIdx("Start_range=", ";", stringDat)     
+        ix1,ix2 = self.extractStringIdx("Start_range=", ";", stringDat)
+        if (ix1 != 0 & ix2 != 0):      
             sR = re.search(r"(\d+)\,(\d+)",stringDat[ix1:ix2])
-            if (len(sR) == 2):
-                s = int(sR.groups()[1])#inner start
-                iS = None
-            else:
-                if ( int( seR.groups()[1] ) < int( sR.groups()[2] ) ):
-                   s = int( seR.groups()[1] )#start
-                   iS = int( sR.groups()[2] )#inner start
+            if (sR != None):
+                if (len(sR.groups()) == 2):
+                    if ( int( sR.groups()[0] ) < int( sR.groups()[1] ) ):
+                        s = int( sR.groups()[0] )#start
+                        iS = int( sR.groups()[1] )#inner start
+                    else:
+                        s = int( sR.groups()[1] )#start
+                        iS = int( sR.groups()[0] )#inner start
                 else:
-                   s = int( seR.groups()[2] )#start
-                   iS = int( sR.groups()[1] )#inner start
-        except:
+                    s = int(sR.groups()[0])#inner start
+                    iS = None
+            else:
+                s = None
+                iS = None
+        else:
             s = None
             iS = None
         return s,iS
         
         
     def getStopRange(self,stringDat):
-        try:
-            ix1,ix2 = self.extractStringIdx("End_range=", ";", tmpDat)           
+        ix1,ix2 = self.extractStringIdx("End_range=", ";", stringDat)    
+        if (ix1 != 0 & ix2 != 0):       
             eR = re.search(r"(\d+)\,(\d+)",stringDat[ix1:ix2])
-            if (len(eR) == 2):
-                e = int(eR.groups()[1])#inner end
-                iE = None
-            else:
-                if ( int(eR.groups()[2]) > int(eR.groups()[1]) ):
-                   e = int(eR.groups()[2])#end
-                   iE = int(eR.groups()[1])#inner end
+            if (eR != None):
+                if (len(eR.groups()) == 2):
+                    if ( int(eR.groups()[1]) > int(eR.groups()[0]) ):
+                        e = int(eR.groups()[1])#end
+                        iE = int(eR.groups()[0])#inner end
+                    else:
+                        e = int(eR.groups()[0])#end
+                        iE = int(eR.groups()[1])#inner end
                 else:
-                   e = int(eR.groups()[1])#end
-                   iE = int(eR.groups()[2])#inner end
-        except:
+                    e = int(eR.groups()[1])#inner end
+                    iE = None
+            else:
+                e = None
+                iE = None
+        else:
             e = None
             iE = None
         return e,iE
@@ -146,8 +157,8 @@ class db():
         
     def getPhenotype(self,stringDat):
         try:
-           ix1,ix2 = self.extractStringIdx("phenotype=", ";", stringDat)
-           pheno  = stringDat[ix1:ix2]
+            ix1,ix2 = self.extractStringIdx("phenotype=", ";", stringDat)
+            pheno  = stringDat[ix1:ix2]
         except:
             pheno = None
         return pheno
