@@ -58,7 +58,7 @@ def loadGVFdb(p2gvf,gvfName,savePath,chromNr=1):
 
                  #stop range
                  e,iE = snvDB.getStopRange( tmpDat )
-                 
+
                  #data origin
                  datOrigin = snvDB.getDatOrigin( tmpDat )
                  

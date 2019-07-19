@@ -109,7 +109,7 @@ class db():
         
     def getStartRange(self,stringDat):
         ix1,ix2 = self.extractStringIdx("Start_range=", ";", stringDat)
-        if (ix1 != 0 & ix2 != 0):      
+        if ( (ix1 != 0) & (ix2 != 0) ):      
             sR = re.search(r"(\d+)\,(\d+)",stringDat[ix1:ix2])
             if (sR != None):
                 if (len(sR.groups()) == 2):
@@ -133,7 +133,7 @@ class db():
         
     def getStopRange(self,stringDat):
         ix1,ix2 = self.extractStringIdx("End_range=", ";", stringDat)    
-        if (ix1 != 0 & ix2 != 0):       
+        if ( (ix1 != 0) & (ix2 != 0) ):       
             eR = re.search(r"(\d+)\,(\d+)",stringDat[ix1:ix2])
             if (eR != None):
                 if (len(eR.groups()) == 2):
