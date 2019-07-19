@@ -109,8 +109,8 @@ class db():
             ix1,ix2 = self.extractStringIdx("Start_range=", ";", stringDat)     
             sR = re.search(r"(\d+)\,(\d+)",stringDat[ix1:ix2])
             if (len(sR) == 2):
-                s = None
-                iS = int(sR.groups()[1])#inner start
+                s = int(sR.groups()[1])#inner start
+                iS = None
             else:
                 s = int( seR.groups()[1] )#start
                 iS = int( sR.groups()[2] )#inner start
@@ -125,8 +125,8 @@ class db():
             ix1,ix2 = self.extractStringIdx("End_range=", ";", tmpDat)           
             eR = re.search(r"(\d+)\,(\d+)",stringDat[ix1:ix2])
             if (len(eR) == 2):
-                e = None
-                iE = int(eR.groups()[1])#inner end
+                e = int(eR.groups()[1])#inner end
+                iE = None
             else:
                 e = int(eR.groups()[2])#end
                 iE = int(eR.groups()[1])#inner end
